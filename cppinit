@@ -11,7 +11,7 @@ fi
 
 mkdir $PORJECT_NAME
 
-CONFIG_FILE_DIR=/home/afterburner/tools/cpp_env
+CONFIG_FILE_DIR=/home/afterburner/utilities/cpp_env
 cp -r $CONFIG_FILE_DIR/. $PORJECT_NAME
 echo 'Created c++ project folder:'
 echo $(pwd)/$PORJECT_NAME
