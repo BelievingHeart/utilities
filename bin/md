@@ -47,7 +47,36 @@ if [ $LS -eq 1 ]
 then
     cd $MARKDOWN_DIR
     echo "ALL MARKDOWNS: "
-    ls *.md
+    FILE_NAMES=($(ls *.md))
+
+    # select
+    SELECTED=0
+    N_ITEMS=$((${#FILE_NAMES[@]}-1))
+    select n in ${FILE_NAMES[@]}
+    do
+        for i in $( seq 0 $N_ITEMS )
+        do
+            if [ $((REPLY-1)) -eq $i ]
+            then
+                FILE_TO_OPEN=${FILE_NAMES[$i]}
+                SELECTED=1
+                break
+            fi
+        done
+        if [ $SELECTED -eq 1 ]
+        then
+            break
+        fi
+    done
+
+    if [ $MODE = WRITE ]
+    then 
+        code $MARKDOWN_DIR/$FILE_TO_OPEN
+    else
+        xdg-open $MARKDOWN_DIR/$FILE_TO_OPEN
+    fi
+
+
     exit 0
 fi
 
