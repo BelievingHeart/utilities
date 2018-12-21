@@ -3,16 +3,21 @@ SET_DIR=0
 LS=0
 MODE=READ
 SENT_HELP=0
-while getopts "lws:" opt 
+NEW_FILE=0
+OPEN_FOLDER=0
+while getopts "fhln:ws:" opt 
 do
 case $opt in
+    f) OPEN_FOLDER=1 ;;
     s) MARKDOWN_DIR=$OPTARG;SET_DIR=1 ;;
     l) LS=1 ;;
     w) MODE=WRITE ;;
+    n) NEW_FILE=1;NEW_FILE_NAME=$OPTARG ;;
     *) SENT_HELP=1
 esac
 done
 
+# help docs
 if [ $SENT_HELP -eq 1 ]
 then
 
@@ -21,13 +26,16 @@ cat <<End-of-message
 \$1 :   tag to match
 [-s:]   set the directory of .md files
 [-l ]   list files
+[-n ]   create a new markdown file
 [-w ]   WRITE mode, default READ mode
+[-f ]   open markdown folder
 ------------------------------
 End-of-message
 
 exit 0
 fi
 
+# set up markdown directory
 log_file='../config/MARKDOWN_DIR'
 if [ $SET_DIR -eq 1 ]
 then
@@ -43,6 +51,21 @@ else
     . $log_file
 fi
 
+# open markdown directory
+if [ $OPEN_FOLDER -eq 1 ]
+then 
+ xdg-open $MARKDOWN_DIR
+ exit 0
+fi
+
+# create new markdown
+if [ $NEW_FILE -eq 1 ]
+then
+    code "$MARKDOWN_DIR/$NEW_FILE_NAME".md
+    exit 0
+fi
+
+# list mode
 if [ $LS -eq 1 ]
 then
     cd $MARKDOWN_DIR
