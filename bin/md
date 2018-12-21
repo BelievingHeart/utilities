@@ -1,0 +1,47 @@
+#!/bin/bash
+while getopts "hs:" opt 
+do
+case $opt in
+    s) MARKDOWN_DIR=$OPTARG;SET_DIR=1 ;;
+    *) echo 'usage: makeusr [-a] [-b] [-c shell] usrname' && exit 1
+esac
+done
+
+
+log_file='../config/MARKDOWN_DIR'
+if [ $SET_DIR -eq 1 ]
+then
+    if [ -d $MARKDOWN_DIR ]
+    then
+        echo "export MARKDOWN_DIR=$MARKDOWN_DIR" > $log_file
+        echo "MARKDOWN_DIR is set to $MARKDOWN_DIR"
+    else
+        echo "$MARKDOWN_DIR is not a valid directory" && exit 1
+    fi
+else
+    . $log_file
+fi
+
+echo MARKDOWN_DIR=$MARKDOWN_DIR
+
+echo the current arguments are set to $*
+shift $((OPTIND -1)) #get rid off all the option-related arguments, this works because they are all in the front
+echo now the arguments are set to $*
+exit 0
+
+# #!/bin/bash
+# while getopts "abc:" opt #a and b are just switches and c shoud follow by an argument
+# do
+# case $opt in
+#     a) VAR1=-m ;;
+#     b) VAR2="-g 100" ;;
+#     c) VAR3="-s $OPTARG" ;;
+#     *) echo 'usage: makeusr [-a] [-b] [-c shell] usrname' && exit 1
+# esac
+# done
+
+# echo the current arguments are set to $*
+# shift $((OPTIND -1)) #get rid off all the option-related arguments, this works because they are all in the front
+# echo now the arguments are set to $*
+# echo "usradd $VAR1 $VAR2 $VAR3 $1"
+# exit 0
