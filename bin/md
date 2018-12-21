@@ -1,12 +1,32 @@
 #!/bin/bash
-while getopts "hs:" opt 
+SET_DIR=0
+LS=0
+MODE=READ
+SENT_HELP=0
+while getopts "lws:" opt 
 do
 case $opt in
     s) MARKDOWN_DIR=$OPTARG;SET_DIR=1 ;;
-    *) echo 'usage: makeusr [-a] [-b] [-c shell] usrname' && exit 1
+    l) LS=1 ;;
+    w) MODE=WRITE ;;
+    *) SENT_HELP=1
 esac
 done
 
+if [ $SENT_HELP -eq 1 ]
+then
+
+cat <<End-of-message
+------------------------------
+\$1 :   tag to match
+[-s:]   set the directory of .md files
+[-l ]   list files
+[-w ]   WRITE mode, default READ mode
+------------------------------
+End-of-message
+
+exit 0
+fi
 
 log_file='../config/MARKDOWN_DIR'
 if [ $SET_DIR -eq 1 ]
@@ -15,6 +35,7 @@ then
     then
         echo "export MARKDOWN_DIR=$MARKDOWN_DIR" > $log_file
         echo "MARKDOWN_DIR is set to $MARKDOWN_DIR"
+        exit 0
     else
         echo "$MARKDOWN_DIR is not a valid directory" && exit 1
     fi
@@ -22,26 +43,55 @@ else
     . $log_file
 fi
 
-echo MARKDOWN_DIR=$MARKDOWN_DIR
+if [ $LS -eq 1 ]
+then
+    cd $MARKDOWN_DIR
+    echo "ALL MARKDOWNS: "
+    ls *.md
+    exit 0
+fi
 
-echo the current arguments are set to $*
+
+# search tags
 shift $((OPTIND -1)) #get rid off all the option-related arguments, this works because they are all in the front
-echo now the arguments are set to $*
-exit 0
+tag=$1
+SEARCH_RESULTS=($(python3 ../scripts/find_tag.py $MARKDOWN_DIR $tag))
+if [ $? -eq 2 ]
+then
+    echo "Can not find any match of <$tag>" && exit 2
+fi
 
-# #!/bin/bash
-# while getopts "abc:" opt #a and b are just switches and c shoud follow by an argument
-# do
-# case $opt in
-#     a) VAR1=-m ;;
-#     b) VAR2="-g 100" ;;
-#     c) VAR3="-s $OPTARG" ;;
-#     *) echo 'usage: makeusr [-a] [-b] [-c shell] usrname' && exit 1
-# esac
-# done
+# get rid of file prefixes and ask usr to select
+index=0
+for r in ${SEARCH_RESULTS[@]}
+do
+    FILE_NAMES[$index]=${r##*/}
+    index=$((index+1))
+done
 
-# echo the current arguments are set to $*
-# shift $((OPTIND -1)) #get rid off all the option-related arguments, this works because they are all in the front
-# echo now the arguments are set to $*
-# echo "usradd $VAR1 $VAR2 $VAR3 $1"
-# exit 0
+# select
+SELECTED=0
+N_ITEMS=$((${#FILE_NAMES[@]}-1))
+select n in ${FILE_NAMES[@]}
+do
+    for i in $( seq 0 $N_ITEMS )
+    do
+        if [ $((REPLY-1)) -eq $i ]
+        then
+            FILE_TO_OPEN=${SEARCH_RESULTS[$i]}
+            SELECTED=1
+            break
+        fi
+    done
+    if [ $SELECTED -eq 1 ]
+    then
+        break
+    fi
+done
+
+if [ $MODE = WRITE ]
+then 
+    code $FILE_TO_OPEN
+else
+    xdg-open $FILE_TO_OPEN
+fi
