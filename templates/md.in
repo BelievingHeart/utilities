@@ -35,8 +35,12 @@ End-of-message
 exit 0
 fi
 
+# set up paths
+prefix=@INSTALL_DIR@
+log_file="$prefix"/config/MARKDOWN_DIR
+script="$prefix"/scripts/find_tag.py
+
 # set up markdown directory
-log_file='/home/afterburner/utilities/config/MARKDOWN_DIR'
 if [ $SET_DIR -eq 1 ]
 then
     if [ -d $MARKDOWN_DIR ]
@@ -107,7 +111,7 @@ fi
 # search tags
 shift $((OPTIND -1)) #get rid off all the option-related arguments, this works because they are all in the front
 tag=$1
-SEARCH_RESULTS=($(python3 ../scripts/find_tag.py $MARKDOWN_DIR $tag))
+SEARCH_RESULTS=($(python3 $script $MARKDOWN_DIR $tag))
 if [ $? -eq 2 ]
 then
     echo "Can not find any match of <$tag>" && exit 2
