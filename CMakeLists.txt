@@ -7,4 +7,4 @@ endif()
 project(install_utils LANGUAGES NONE)
 
 set(INSTALL_DIR ${CMAKE_SOURCE_DIR})
-configure_file(${CMAKE_SOURCE_DIR}/templates/md.sh ${CMAKE_SOURCE_DIR}/md_test.sh @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/templates/md.sh ${CMAKE_SOURCE_DIR}/bin/md @ONLY)
