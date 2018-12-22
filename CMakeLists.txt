@@ -5,8 +5,8 @@ if(${CMAKE_VERSION} VERSION_LESS 3.12)
 endif()
 
 project(install_utils LANGUAGES NONE)
-
+include(${CMAKE_SOURCE_DIR}/cmake/install_sh.cmake)
 set(INSTALL_DIR ${CMAKE_SOURCE_DIR})
-set(MD_EXECUTABLE ${CMAKE_SOURCE_DIR}/bin/md)
-configure_file(${CMAKE_SOURCE_DIR}/templates/md.sh ${MD_EXECUTABLE} @ONLY)
-execute_process(COMMAND chmod +x ${MD_EXECUTABLE})
+
+install_sh(INFILE cppinit.sh OUTFILE cppinit)
+install_sh(INFILE md.sh OUTFILE md)

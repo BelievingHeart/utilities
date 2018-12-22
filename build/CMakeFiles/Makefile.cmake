@@ -9,14 +9,13 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
   "../CMakeLists.txt"
   "CMakeFiles/3.13.1/CMakeSystem.cmake"
+  "../cmake/install_sh.cmake"
+  "../templates/cppinit.sh"
   "../templates/md.sh"
-  "/usr/local/share/cmake-3.13/Modules/CMakeDetermineSystem.cmake"
   "/usr/local/share/cmake-3.13/Modules/CMakeGenericSystem.cmake"
   "/usr/local/share/cmake-3.13/Modules/CMakeInitializeConfigs.cmake"
-  "/usr/local/share/cmake-3.13/Modules/CMakeSystem.cmake.in"
   "/usr/local/share/cmake-3.13/Modules/CMakeSystemSpecificInformation.cmake"
   "/usr/local/share/cmake-3.13/Modules/CMakeSystemSpecificInitialize.cmake"
-  "/usr/local/share/cmake-3.13/Modules/CMakeUnixFindMake.cmake"
   "/usr/local/share/cmake-3.13/Modules/Platform/Linux.cmake"
   "/usr/local/share/cmake-3.13/Modules/Platform/UnixPaths.cmake"
   )
@@ -29,7 +28,7 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "CMakeFiles/3.13.1/CMakeSystem.cmake"
+  "../bin/cppinit"
   "../bin/md"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )

@@ -10,7 +10,7 @@ else
 fi 
 
 mkdir $PORJECT_NAME
-prefix=/home/afterburner/utilities
+prefix=@INSTALL_DIR@
 CONFIG_FILE_DIR="$prefix"/cpp_env
 cp -r $CONFIG_FILE_DIR/. $PORJECT_NAME
 echo 'Created c++ project folder:'
