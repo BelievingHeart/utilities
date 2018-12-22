@@ -30,7 +30,7 @@ set(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/3.13.1/CMakeSystem.cmake"
-  "../md_test.sh"
+  "../bin/md"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

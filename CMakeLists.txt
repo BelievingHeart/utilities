@@ -7,4 +7,6 @@ endif()
 project(install_utils LANGUAGES NONE)
 
 set(INSTALL_DIR ${CMAKE_SOURCE_DIR})
-configure_file(${CMAKE_SOURCE_DIR}/templates/md.sh ${CMAKE_SOURCE_DIR}/bin/md @ONLY)
+set(MD_EXECUTABLE ${CMAKE_SOURCE_DIR}/bin/md)
+configure_file(${CMAKE_SOURCE_DIR}/templates/md.sh ${MD_EXECUTABLE} @ONLY)
+execute_process(COMMAND chmod +x ${MD_EXECUTABLE})

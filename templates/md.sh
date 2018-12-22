@@ -65,7 +65,10 @@ fi
 # create new markdown
 if [ $NEW_FILE -eq 1 ]
 then
-    code "$MARKDOWN_DIR/$NEW_FILE_NAME".md
+    NEW_FILE_PATH="$MARKDOWN_DIR/$NEW_FILE_NAME".md
+    touch $NEW_FILE_PATH
+    echo  '[//]: # ()' > $NEW_FILE_PATH
+    code $NEW_FILE_PATH
     exit 0
 fi
 
