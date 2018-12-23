@@ -14,4 +14,5 @@ prefix=/home/afterburner/utilities
 CONFIG_FILE_DIR="$prefix"/cpp_env
 cp -r $CONFIG_FILE_DIR/. $PORJECT_NAME
 echo 'Created c++ project folder:'
-echo $(pwd)/$PORJECT_NAME
+echo \<$(pwd)/$PORJECT_NAME\> is sent to the clipboard
+echo $(pwd)/$PORJECT_NAME | xclip -sel clip
