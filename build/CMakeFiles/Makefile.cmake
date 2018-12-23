@@ -11,6 +11,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.13.1/CMakeSystem.cmake"
   "../cmake/install_sh.cmake"
   "../templates/cppinit.sh"
+  "../templates/getpath.sh"
   "../templates/md.sh"
   "/usr/local/share/cmake-3.13/Modules/CMakeGenericSystem.cmake"
   "/usr/local/share/cmake-3.13/Modules/CMakeInitializeConfigs.cmake"
@@ -30,6 +31,7 @@ set(CMAKE_MAKEFILE_OUTPUTS
 set(CMAKE_MAKEFILE_PRODUCTS
   "../bin/cppinit"
   "../bin/md"
+  "../bin/getpath"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

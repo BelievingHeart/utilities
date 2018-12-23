@@ -10,3 +10,4 @@ set(INSTALL_DIR ${CMAKE_SOURCE_DIR})
 
 install_sh(INFILE cppinit.sh OUTFILE cppinit)
 install_sh(INFILE md.sh OUTFILE md)
+install_sh(INFILE getpath.sh OUTFILE getpath)
