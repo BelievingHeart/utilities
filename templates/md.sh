@@ -103,7 +103,8 @@ then
     then
         code $MARKDOWN_DIR $MARKDOWN_DIR/$FILE_TO_OPEN
     else
-        xdg-open $MARKDOWN_DIR/$FILE_TO_OPEN
+        # xdg-open $MARKDOWN_DIR/$FILE_TO_OPEN
+        echo $(xdg-open $MARKDOWN_DIR/$FILE_TO_OPEN) > /dev/null
     fi
 
 
@@ -156,6 +157,6 @@ else
     then 
         code $MARKDOWN_DIR $FILE_TO_OPEN
     else
-        xdg-open $FILE_TO_OPEN
+        echo $(xdg-open $FILE_TO_OPEN) > /dev/null
     fi
 fi
