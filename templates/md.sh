@@ -100,8 +100,8 @@ then
     done
 
     if [ $MODE = WRITE ]
-    then 
-        code $MARKDOWN_DIR/$FILE_TO_OPEN
+    then
+        code $MARKDOWN_DIR $MARKDOWN_DIR/$FILE_TO_OPEN
     else
         xdg-open $MARKDOWN_DIR/$FILE_TO_OPEN
     fi
@@ -150,7 +150,7 @@ done
 
 if [ $MODE = WRITE ]
 then 
-    code $FILE_TO_OPEN
+    code $MARKDOWN_DIR $FILE_TO_OPEN
 else
     xdg-open $FILE_TO_OPEN
 fi
