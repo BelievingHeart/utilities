@@ -13,6 +13,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "../templates/cppinit.sh"
   "../templates/getpath.sh"
   "../templates/md.sh"
+  "../templates/run-valgrind.sh"
   "/usr/local/share/cmake-3.13/Modules/CMakeGenericSystem.cmake"
   "/usr/local/share/cmake-3.13/Modules/CMakeInitializeConfigs.cmake"
   "/usr/local/share/cmake-3.13/Modules/CMakeSystemSpecificInformation.cmake"
@@ -32,6 +33,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "../bin/cppinit"
   "../bin/md"
   "../bin/getpath"
+  "../bin/run-valgrind"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
