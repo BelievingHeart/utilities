@@ -114,43 +114,48 @@ fi
 # search tags
 shift $((OPTIND -1)) #get rid off all the option-related arguments, this works because they are all in the front
 tag=$1
-SEARCH_RESULTS=($(python3 $script $MARKDOWN_DIR $tag))
-if [ $? -eq 2 ]
+if [ -z $1 ]
 then
-    echo "Can not find any match of <$tag>" && exit 2
-fi
+    code $MARKDOWN_DIR 
+else
+    SEARCH_RESULTS=($(python3 $script $MARKDOWN_DIR $tag))
+    if [ $? -eq 2 ]
+    then
+        echo "Can not find any match of <$tag>" && exit 2
+    fi
 
-# get rid of file prefixes and ask usr to select
-index=0
-for r in ${SEARCH_RESULTS[@]}
-do
-    FILE_NAMES[$index]=${r##*/}
-    index=$((index+1))
-done
-
-# select
-SELECTED=0
-N_ITEMS=$((${#FILE_NAMES[@]}-1))
-select n in ${FILE_NAMES[@]}
-do
-    for i in $( seq 0 $N_ITEMS )
+    # get rid of file prefixes and ask usr to select
+    index=0
+    for r in ${SEARCH_RESULTS[@]}
     do
-        if [ $((REPLY-1)) -eq $i ]
+        FILE_NAMES[$index]=${r##*/}
+        index=$((index+1))
+    done
+
+    # select
+    SELECTED=0
+    N_ITEMS=$((${#FILE_NAMES[@]}-1))
+    select n in ${FILE_NAMES[@]}
+    do
+        for i in $( seq 0 $N_ITEMS )
+        do
+            if [ $((REPLY-1)) -eq $i ]
+            then
+                FILE_TO_OPEN=${SEARCH_RESULTS[$i]}
+                SELECTED=1
+                break
+            fi
+        done
+        if [ $SELECTED -eq 1 ]
         then
-            FILE_TO_OPEN=${SEARCH_RESULTS[$i]}
-            SELECTED=1
             break
         fi
     done
-    if [ $SELECTED -eq 1 ]
-    then
-        break
-    fi
-done
 
-if [ $MODE = WRITE ]
-then 
-    code $MARKDOWN_DIR $FILE_TO_OPEN
-else
-    xdg-open $FILE_TO_OPEN
+    if [ $MODE = WRITE ]
+    then 
+        code $MARKDOWN_DIR $FILE_TO_OPEN
+    else
+        xdg-open $FILE_TO_OPEN
+    fi
 fi
