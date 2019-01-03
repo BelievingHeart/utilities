@@ -10,6 +10,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "../CMakeLists.txt"
   "CMakeFiles/3.13.1/CMakeSystem.cmake"
   "../cmake/install_sh.cmake"
+  "../templates/asm.sh"
   "../templates/cppinit.sh"
   "../templates/getpath.sh"
   "../templates/md.sh"
@@ -34,6 +35,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "../bin/md"
   "../bin/getpath"
   "../bin/run-valgrind"
+  "../bin/asm"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
