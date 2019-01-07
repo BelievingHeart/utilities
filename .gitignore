@@ -15,6 +15,7 @@
 
 ### Ignore binaries
 */bin/*
+*bin/*
 */build/*
 *build/*
 
