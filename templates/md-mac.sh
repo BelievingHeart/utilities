@@ -36,7 +36,7 @@ exit 0
 fi
 
 # set up paths
-prefix=/Users/afterburner/utilities
+prefix=@INSTALL_DIR@
 log_file="$prefix"/config/MARKDOWN_DIR
 script="$prefix"/scripts/find_tag.py
 

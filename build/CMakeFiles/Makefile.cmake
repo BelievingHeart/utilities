@@ -7,20 +7,17 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
+  "/Applications/CMake.app/Contents/share/cmake-3.13/Modules/CMakeGenericSystem.cmake"
+  "/Applications/CMake.app/Contents/share/cmake-3.13/Modules/CMakeInitializeConfigs.cmake"
+  "/Applications/CMake.app/Contents/share/cmake-3.13/Modules/CMakeSystemSpecificInformation.cmake"
+  "/Applications/CMake.app/Contents/share/cmake-3.13/Modules/CMakeSystemSpecificInitialize.cmake"
+  "/Applications/CMake.app/Contents/share/cmake-3.13/Modules/Platform/Darwin-Initialize.cmake"
+  "/Applications/CMake.app/Contents/share/cmake-3.13/Modules/Platform/Darwin.cmake"
+  "/Applications/CMake.app/Contents/share/cmake-3.13/Modules/Platform/UnixPaths.cmake"
   "../CMakeLists.txt"
-  "CMakeFiles/3.13.1/CMakeSystem.cmake"
+  "CMakeFiles/3.13.0-rc2/CMakeSystem.cmake"
   "../cmake/install_sh.cmake"
-  "../templates/asm.sh"
-  "../templates/cppinit.sh"
-  "../templates/getpath.sh"
-  "../templates/md.sh"
-  "../templates/run-valgrind.sh"
-  "/usr/local/share/cmake-3.13/Modules/CMakeGenericSystem.cmake"
-  "/usr/local/share/cmake-3.13/Modules/CMakeInitializeConfigs.cmake"
-  "/usr/local/share/cmake-3.13/Modules/CMakeSystemSpecificInformation.cmake"
-  "/usr/local/share/cmake-3.13/Modules/CMakeSystemSpecificInitialize.cmake"
-  "/usr/local/share/cmake-3.13/Modules/Platform/Linux.cmake"
-  "/usr/local/share/cmake-3.13/Modules/Platform/UnixPaths.cmake"
+  "../templates/md-mac.sh"
   )
 
 # The corresponding makefile is:
@@ -31,11 +28,7 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "../bin/cppinit"
   "../bin/md"
-  "../bin/getpath"
-  "../bin/run-valgrind"
-  "../bin/asm"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

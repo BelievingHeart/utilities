@@ -13,4 +13,8 @@
 # Ignore all local history of files
 .history
 
+### Ignore binaries
+bin/
+build/
+
 # End of https://www.gitignore.io/api/visualstudiocode
