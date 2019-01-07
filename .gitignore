@@ -14,7 +14,7 @@
 .history
 
 ### Ignore binaries
-bin/
-build/
+bin/*
+build/*
 
 # End of https://www.gitignore.io/api/visualstudiocode
