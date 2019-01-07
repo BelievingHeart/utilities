@@ -1,2 +1,0 @@
-/Users/afterburner/utilities/build/CMakeFiles/rebuild_cache.dir
-/Users/afterburner/utilities/build/CMakeFiles/edit_cache.dir
