@@ -1,5 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include <fmt/printf.h>
+#include "timer.h"
 
 namespace db
 {

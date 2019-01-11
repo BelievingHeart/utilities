@@ -25,9 +25,27 @@ endif()
 
 find_package(OpenCV REQUIRED)
 find_package(fmt REQUIRED CONFIG)
-add_executable(main main.cpp)
-target_include_directories(main PRIVATE ${OpenCV_INCLUDE_DIRS})
-target_link_libraries(main PRIVATE ${OpenCV_LIBS} fmt::fmt)
+# find_package(Boost REQUIRED)
+
+
+
+add_executable(main 
+                    main.cpp
+                    src/timer.cpp
+                    )
+
+target_include_directories(main PRIVATE 
+    ${OpenCV_INCLUDE_DIRS}
+    # ${Boost_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    )
+target_link_libraries(main PRIVATE 
+    ${OpenCV_LIBS}
+    fmt::fmt
+    # ${Boost_LIBRARIES}
+)
+
+
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     target_compile_definitions(main PRIVATE DEBUG)
 endif()
