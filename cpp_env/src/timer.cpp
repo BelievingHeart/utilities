@@ -10,14 +10,11 @@ Timer::~Timer()
 {
     in_file.open(file_name);
     long old_time;
+    std::cout << "\t\t\tcurrent\t\tprevious " << '\n';
     for (const auto &[session, new_time] : _time_by_session)
     {
         in_file >> old_time;
-        std::cout << "[" << session << "]\tcurrent\t\tprevious " << '\n'
-                  << " \t\t\t\t" << std::setw(5) << new_time
-                  << "\t\t"
-                  << std::setw(5) << old_time
-                  << '\t' << (metric == Metric::second ? "seconds" : "ms") << '\n';
+        std::cout << std::setw(15) << std::setiosflags(std::ios::left) << session << std::setw(5) << new_time << "\t\t" << std::setw(5) << old_time << '\t' << (metric == Metric::second ? "seconds" : "ms") << '\n';
     }
     in_file.close();
     out_file.open(file_name, std::ofstream::trunc | std::ofstream::out);
@@ -31,13 +28,8 @@ Timer::~Timer()
 void Timer::stop(std::string session_name)
 {
     _tp_current = Clock::now();
-    long time_elapsed = metric == Metric::second ? std::chrono::duration_cast<std::chrono::seconds>(
-                                                       _tp_current - _tp_start)
-                                                       .count()
-                                                 : std::chrono::duration_cast<std::chrono::milliseconds>(
-                                                       _tp_current - _tp_start)
-                                                       .count();
-    _time_by_session[std::move(session_name)] = time_elapsed;
+    long time_elapsed = metric == Metric::second ? std::chrono::duration_cast<std::chrono::seconds>(_tp_current - _tp_start).count() : std::chrono::duration_cast<std::chrono::milliseconds>(_tp_current - _tp_start).count();
+    _time_by_session["[" + session_name + "]"] = time_elapsed;
     _tp_start = _tp_current;
 }
 

@@ -23,8 +23,8 @@ if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "using opencv release")
 endif()
 
-find_package(OpenCV REQUIRED)
-find_package(fmt REQUIRED CONFIG)
+# find_package(OpenCV REQUIRED)
+# find_package(fmt REQUIRED CONFIG)
 # find_package(Boost REQUIRED)
 
 
@@ -35,13 +35,13 @@ add_executable(main
                     )
 
 target_include_directories(main PRIVATE 
-    ${OpenCV_INCLUDE_DIRS}
+    # ${OpenCV_INCLUDE_DIRS}
     # ${Boost_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/src
     )
 target_link_libraries(main PRIVATE 
-    ${OpenCV_LIBS}
-    fmt::fmt
+    # ${OpenCV_LIBS}
+    # fmt::fmt
     # ${Boost_LIBRARIES}
 )
 
