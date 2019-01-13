@@ -22,8 +22,7 @@ struct Timer
     typedef std::chrono::high_resolution_clock Clock;
     typedef std::chrono::time_point<Clock> timePoint;
 
-    Timer(std::string file_name, Metric m) : _tp_start(Clock::now()), file_name(std::move(file_name)), metric(m) {}
-    Timer() = delete;
+    Timer(Metric m = Metric::milisecond, std::string file_name = "benchmark.log") : _tp_start(Clock::now()), file_name(std::move(file_name)), metric(m) {}
     Timer(const Timer &other) = delete;
     Timer(Timer &&other) = default;
     Timer &operator=(const Timer &other) = delete;
