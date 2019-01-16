@@ -10,11 +10,11 @@ Timer::~Timer()
 {
     in_file.open(file_name);
     long old_time;
-    std::cout << "\t\t\tcurrent\t\tprevious " << '\n';
+    std::cout << std::setw(27)<<" "<< "current    "<<"previous " << '\n';
     for (const auto &[session, new_time] : _time_by_session)
     {
         in_file >> old_time;
-        std::cout << std::setw(15) << std::setiosflags(std::ios::left) << session << std::setw(5) << new_time << "\t\t" << std::setw(5) << old_time << '\t' << (metric == Metric::second ? "seconds" : "ms") << '\n';
+        std::cout << std::setw(29) << std::setiosflags(std::ios::left) << session << std::setw(5) << new_time << "\t\t" << std::setw(6) << old_time << "       " << (metric == Metric::second ? "seconds" : "ms") << '\n';
     }
     in_file.close();
     out_file.open(file_name, std::ofstream::trunc | std::ofstream::out);

@@ -16,6 +16,7 @@ install_sh(INFILE md.sh OUTFILE md)
 install_sh(INFILE getpath.sh OUTFILE getpath)
 install_sh(INFILE run-valgrind.sh OUTFILE run-valgrind)
 install_sh(INFILE asm.sh OUTFILE asm)
+install_sh(INFILE test-concurrency.sh OUTFILE test-concurrency)
 endif()
 
 
