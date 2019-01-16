@@ -18,7 +18,6 @@ namespace Dispatcher{
           index = other;
           return *this;
         }
-        impl_KEY(const size_t &other) : index(other){}
 
         impl_KEY() = default;
         impl_KEY &operator=(const impl_KEY &other) = default;
