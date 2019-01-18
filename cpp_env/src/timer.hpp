@@ -32,7 +32,7 @@ struct Timer
     void stop(std::string session_name);
     void start();
 
-  private:
+private:
     timePoint _tp_start, _tp_current;
     std::map<std::string, long> _time_by_session;
     std::ofstream out_file;
