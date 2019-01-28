@@ -17,7 +17,8 @@
 enum class Metric
 {
     second,
-    milisecond
+    millisecond,
+    nanosecond
 };
 
 struct Timer
@@ -25,12 +26,20 @@ struct Timer
     typedef std::chrono::high_resolution_clock Clock;
     typedef std::chrono::time_point<Clock> timePoint;
 
-    Timer(Metric m = Metric::milisecond, std::string file_name = "benchmark.log") : _tp_start(Clock::now()), file_name(std::move(file_name)), metric(m) {}
+    Timer(Metric m = Metric::millisecond, const std::string& file_name = "benchmark.log") : _tp_start(Clock::now()), file_name(file_name), metric(m) {
+        if (metric == Metric::second) {
+            unit = "seconds";
+        } else if (metric == Metric::millisecond) {
+            unit = "ms";
+        } else{
+            unit = "ns";
+        }
+    }
     Timer(const Timer &other) = delete;
     Timer(Timer &&other) = default;
     Timer &operator=(const Timer &other) = delete;
     Timer &operator=(Timer &&other) = default;
-     ~Timer()
+    ~Timer()
     {
         in_file.open(file_name);
         long old_time;
@@ -38,7 +47,7 @@ struct Timer
         for (const auto &[session, new_time] : _time_by_session)
         {
             in_file >> old_time;
-            std::cout << std::setw(29) << std::setiosflags(std::ios::left) << session << std::setw(5) << new_time << "\t\t" << std::setw(6) << old_time << "       " << (metric == Metric::second ? "seconds" : "ms") << '\n';
+            std::cout << std::setw(29) << std::setiosflags(std::ios::left) << session << std::setw(5) << new_time << "\t\t" << std::setw(6) << old_time << "       " << unit << '\n';
         }
         in_file.close();
         out_file.open(file_name, std::ofstream::trunc | std::ofstream::out);
@@ -51,7 +60,14 @@ struct Timer
 
     void stop(const std::string &session_name){
         _tp_current = Clock::now();
-        long time_elapsed = metric == Metric::second ? std::chrono::duration_cast<std::chrono::seconds>(_tp_current - _tp_start).count() : std::chrono::duration_cast<std::chrono::milliseconds>(_tp_current - _tp_start).count();
+        long time_elapsed = 0;
+        if (metric == Metric::second) {
+            time_elapsed = std::chrono::duration_cast<std::chrono::seconds>(_tp_current - _tp_start).count();
+        } else if (metric == Metric::millisecond) {
+            time_elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(_tp_current - _tp_start).count();
+        } else{
+            time_elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(_tp_current - _tp_start).count();
+        }
         _time_by_session["[" + session_name + "]"] = time_elapsed;
         _tp_start = _tp_current;
     }
@@ -65,6 +81,7 @@ private:
     std::ifstream in_file;
     const std::string file_name;
     const Metric metric;
+    std::string unit;
 };
 
 #endif //HELLO_TIMER_H
