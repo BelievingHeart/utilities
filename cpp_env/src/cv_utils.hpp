@@ -172,3 +172,15 @@ private:
         return duplicated;
     }
 };
+
+void label_boundingBox(cv::InputOutputArray canvas, const cv::Rect2i &box, const cv::String &text, const cv::Scalar& backgroundColor = {255,0,0}, const cv::Scalar& boxColor = {0,255,0}){
+    constexpr double fontScale = 0.6;
+    constexpr int thickness = 1;
+    constexpr int fontFace = cv::FONT_HERSHEY_SIMPLEX;
+    int baseline = 0;
+    cv::Size2i sz = cv::getTextSize(text, fontFace, fontScale, thickness, &baseline);
+    const int height = baseline + sz.height + thickness;
+    cv::rectangle(canvas, {box.x, box.y - height, sz.width, height}, backgroundColor, -1);
+    cv::rectangle(canvas, box, boxColor, 1);
+    cv::putText(canvas, text, {box.x, box.y - baseline}, fontFace, fontScale, {255, 255, 255}, thickness);
+}
