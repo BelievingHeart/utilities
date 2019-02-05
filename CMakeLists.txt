@@ -10,6 +10,7 @@ set(INSTALL_DIR ${CMAKE_SOURCE_DIR})
 
 if(APPLE)
 install_sh(INFILE md-mac.sh OUTFILE md)
+install_sh(INFILE cppinit.sh OUTFILE cppinit)
 else()
 install_sh(INFILE cppinit.sh OUTFILE cppinit)
 install_sh(INFILE md.sh OUTFILE md)

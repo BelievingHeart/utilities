@@ -16,4 +16,10 @@ cp -r $CONFIG_FILE_DIR/. $PORJECT_NAME
 git init $(pwd)/$PORJECT_NAME
 echo 'Created c++ project folder:'
 echo \<$(pwd)/$PORJECT_NAME\> is sent to the clipboard
-echo $(pwd)/$PORJECT_NAME | xclip -sel clip
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    clipboard="xclip -sel clip"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    clipboard="pbcopy"
+fi
+printf $(pwd)/$PORJECT_NAME | $clipboard

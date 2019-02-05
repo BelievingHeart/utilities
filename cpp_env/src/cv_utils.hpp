@@ -28,7 +28,7 @@ void imshow(const cv::String &winName_, const cv::Mat &img_)
 #endif // DEBUG
 }
 
-void draw_rotatedRect(InputOutputArray image, const RotatedRect& rt)
+void draw_rotatedRect(cv::InputOutputArray image, const cv::RotatedRect& rt)
 {
     cv::Scalar color = cv::Scalar(255.0, 0.0, 255.0); // white
     cv::Point2f vertices2f[4];
@@ -42,8 +42,107 @@ void draw_rotatedRect(InputOutputArray image, const RotatedRect& rt)
 }; // namespace db
 
 struct ButtonArray {
-    ButtonArray(double fontScale, int thickness, int fontFace = cv::FONT_HERSHEY_SIMPLEX) : fontScale(fontScale), thickness(thickness), fontFace(fontFace) {}
-    void addButton(const cv::String& buttonName) {
+    ButtonArray(double fontScale = 0.8, int thickness = 2, int fontFace = cv::FONT_HERSHEY_SIMPLEX) : fontScale(fontScale),
+                                                                                            thickness(thickness),
+                                                                                            fontFace(fontFace) {}
+
+    template<typename ...T>
+    void add_exclusiveButtons(T ... args) {
+        add_buttons(args...);
+        std::vector<cv::String> buttonNames;
+        buttonNames.reserve(sizeof...(args));
+        (void) std::initializer_list<int>{(buttonNames.push_back(args), 0)...};
+        exclusive_buttons.push_back(std::move(buttonNames));
+    }
+
+
+
+    template <typename ... T>
+    void add_buttons(T ... args){
+        static_assert(std::conjunction_v<std::is_constructible<cv::String, T>...>);
+        (void) std::initializer_list<int>{(addButton(args), 0)...};
+    }
+
+    void flip(const cv::String &buttonName) {
+        if (!exclusive_buttons.empty()) {
+            size_t index_i = 0, index_j = 0;
+            bool foundExclusive = false;
+            for (size_t i = 0; i != exclusive_buttons.size(); i++) {
+                for (size_t j = 0; j != exclusive_buttons[i].size(); j++) {
+                    if (buttonName == exclusive_buttons[i][j]) {
+                        index_i = i;
+                        index_j = j;
+                        foundExclusive = true;
+                        break;
+                    }
+                }
+                if (foundExclusive) break;
+            }
+            if (!foundExclusive) {
+                buttons[buttonName].second = !buttons[buttonName].second;
+            }else{
+                // Only flip this exclusive button if it was OFF, else do nothing
+                if (!buttons[buttonName].second) {
+                    for (size_t j = 0; j != exclusive_buttons[index_i].size(); j++) {
+                        if (j != index_j) buttons[exclusive_buttons[index_i][j]].second = false;
+                    }
+                    buttons[buttonName].second = true;
+                }
+            }
+        }else{
+            buttons[buttonName].second = !buttons[buttonName].second;
+        }
+
+    }
+
+    void imshow(const cv::String &winName, cv::InputOutputArray canvas) {
+        auto mouse_callBack = [](int event, int x, int y, int flags, void *userdata) {
+            auto &self = *static_cast<ButtonArray *>(userdata);
+            if (event == cv::EVENT_LBUTTONDOWN) {
+                for (const auto &[buttonName, button] : self.getButtons()) {
+                    const auto &bx = button.first.x;
+                    const auto &by = button.first.y;
+                    const auto &bw = button.first.width;
+                    const auto &bh = button.first.height;
+                    if (x > bx and x < bx + bw and y > by and y < by + bh) {
+                        self.flip(buttonName);
+                    }
+                }
+            }
+        };
+
+        for (const auto &button : buttons) {
+            if (button.second.second) {
+                rectangle(canvas, button.second.first, {0,200,0}, -1);
+            }
+            rectangle(canvas, button.second.first, {0,0,255}, 1);
+            putText(canvas, button.first, {button.second.first.x, button.second.first.y + height - baseline}, fontFace,
+                    fontScale, 0, thickness);
+        }
+        cv::namedWindow(winName);
+        cv::setMouseCallback(winName, mouse_callBack, static_cast<void *>(this));
+        cv::imshow(winName, canvas);
+    }
+
+    bool &getState(const cv::String &key) {
+        return buttons[key].second;
+    }
+
+    const std::map<cv::String, std::pair<cv::Rect2i, bool>> &getButtons() const {
+        return buttons;
+    }
+
+private:
+
+    std::map<cv::String, std::pair<cv::Rect2i, bool>> buttons;
+    std::vector<std::vector<cv::String>> exclusive_buttons;
+    double fontScale;
+    int thickness, fontFace, baseline = 0, height = 0;
+    int maxWidth = -1;
+    int top = 5, left = 5;
+
+    void addButton(const cv::String &buttonName) {
+        assert(!is_duplicated(buttonName));
         const cv::Size sz = cv::getTextSize(buttonName, fontFace, fontScale, thickness, &baseline);
         // initialize height for the first push_back
         if (buttons.empty()) {
@@ -62,40 +161,14 @@ struct ButtonArray {
         top += height;
     }
 
-    void imshow(const cv::String& winName, cv::InputOutputArray canvas){
-        auto mouse_callBack = [](int event, int x, int y, int flags, void *userdata) {
-            if (event == cv::EVENT_LBUTTONDOWN) {
-                for (auto &[buttonName ,button] : *static_cast<std::map<cv::String, std::pair<cv::Rect2i, bool>>*>(userdata)) {
-                    const auto& bx = button.first.x;
-                    const auto& by = button.first.y;
-                    const auto& bw = button.first.width;
-                    const auto& bh = button.first.height;
-                    if (x > bx and x < bx + bw and y > by and y < by + bh) {
-                        button.second = !button.second;
-                        fmt::print("Set <{}> to {}\n", buttonName, button.second ? "ON" : "OFF");
-                    }
-                }
+    bool is_duplicated(const cv::String& name){
+        bool duplicated = false;
+        for (const auto &p : buttons) {
+            if (p.first == name) {
+                duplicated = true;
+                break;
             }
-        };
-
-        for (const auto& button : buttons) {
-            rectangle(canvas, button.second.first, {255, 0, 0}, 2);
-            putText(canvas, button.first, {button.second.first.x, button.second.first.y + height - baseline}, fontFace, fontScale, 0, thickness);
         }
-        cv::namedWindow(winName);
-        cv::setMouseCallback(winName, mouse_callBack, static_cast<void *>(&buttons));
-        cv::imshow(winName, canvas);
+        return duplicated;
     }
-
-    bool& getState(const cv::String& key){
-        return buttons[key].second;
-    }
-
-  private:
-    std::map<cv::String, std::pair<cv::Rect2i, bool>> buttons;
-    double fontScale;
-    int thickness, fontFace, baseline = 0, height = 0;
-    int maxWidth = -1;
-    int top = 5, left = 5;
-
 };
