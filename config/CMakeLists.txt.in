@@ -31,6 +31,15 @@ set(fmt_DIR "~/clones/fmt/build-release")
 find_package(fmt REQUIRED CONFIG)
 target_link_libraries(main PRIVATE fmt::fmt)
 
+# qt
+if(APPLE)
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} /usr/local/opt/qt)
+else()
+
+endif()
+find_package(Qt5Widgets CONFIG REQUIRED)
+target_link_libraries(main PRIVATE Qt5::Widgets)
+
 # tbb
 #set(TBB_ROOT ~/clones/tbb-cmake)
 #add_subdirectory(${TBB_ROOT} ${TBB_ROOT}/build-debug)
