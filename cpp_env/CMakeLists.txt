@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(qt-toys)
+project(algorithm)
 
 
 set(CMAKE_CXX_STANDARD 17)
@@ -30,6 +30,16 @@ target_link_libraries(main PRIVATE ${OpenCV_LIBS})
 set(fmt_DIR "~/clones/fmt/build-release")
 find_package(fmt REQUIRED CONFIG)
 target_link_libraries(main PRIVATE fmt::fmt)
+
+# qt
+if(APPLE)
+set(Qt5_DIR /usr/local/opt/qt/lib/cmake/Qt5)
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} /usr/local/opt/qt)
+else()
+
+endif()
+find_package(Qt5 REQUIRED COMPONENTS Widgets Core)
+target_link_libraries(main PRIVATE Qt5::Widgets Qt5::Core)
 
 # tbb
 #set(TBB_ROOT ~/clones/tbb-cmake)
